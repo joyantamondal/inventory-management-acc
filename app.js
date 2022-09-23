@@ -133,4 +133,21 @@ app.post("/api/v1/product", async(req, res, next) => {
   }
 });
 
+app.get("/api/v1/product", async(req,res,nex)=>{
+try{
+  const products = await Product.find({_id:'632a029da8054c85e92d073a'})
+  res.status(200).json({
+  status:'Success',
+  data:products
+  })
+
+}
+catch(error){
+res.status(400).json({
+status:"fail",
+message:'can not get data',
+error: error.message
+})
+}
+})
 module.exports = app;
