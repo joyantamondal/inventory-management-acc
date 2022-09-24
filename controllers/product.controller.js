@@ -1,6 +1,10 @@
+const Product = require("../models/Product");
 const {
   getProductService,
   createProductService,
+  updateProductByIdService,
+  bulkUpdateProductService,
+  deleteProductByIdService
 } = require("../services/product.services");
 
 exports.getProducts = async (req, res, nex) => {
@@ -33,6 +37,57 @@ exports.createProduct = async (req, res, next) => {
     res.status(400).json({
       status: "Fail",
       message: "Data is not inserted",
+      error: error.message,
+    });
+  }
+};
+
+exports.updateProductById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await updateProductByIdService(id, req.body);
+    res.status(200).json({
+      status: "success",
+      message: "Product successfully updated!",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Fail",
+      message: "Couldn't update a product",
+      error: error.message,
+    });
+  }
+};
+
+exports.bulkUpdateProduct = async (req, res, next) => {
+  try {
+    
+    const result = await bulkUpdateProductService(req.body);
+    res.status(200).json({
+      status: "success",
+      message: "Product successfully updated!",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Fail",
+      message: "Couldn't update a product",
+      error: error.message,
+    });
+  }
+};
+
+exports.deleteProductById = async (req, res, next) => {
+  try {
+    const {id} = req.params;
+    const result = await deleteProductByIdService(id);
+    res.status(200).json({
+      status: "success",
+      message: "Product successfully Deleted!",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Fail",
+      message: "Couldn't delete product",
       error: error.message,
     });
   }
