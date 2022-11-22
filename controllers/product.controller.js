@@ -10,11 +10,18 @@ const {
 
 exports.getProducts = async (req, res, nex) => {
   try {
-    const filters = { ...req.query };
 
+    
+    let filters = { ...req.query };
     //sort , page, limit -> exclude
     const excludeFields = ["sort", "page", "limit"];
     excludeFields.forEach((field) => delete filters[field]);
+
+    //gt, lt, gte, lte etc
+    let filtersString = JSON.stringify(filters)
+    filtersString=filtersString.replace(/\b(gt|gte|le|lte)\b/g,match=>`$${match}`)
+    filters=JSON.parse(filtersString) 
+
     const quries = {}
     if(req.query.sort){
       // price, quantity -> 'price quantity'
